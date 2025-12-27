@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hacking Style Calculator</title>
+<style>
+  /* Body and Background */
+  body {
+    font-family: 'Courier New', Courier, monospace;
+    background: radial-gradient(circle at center, #001100 0%, #000000 100%);
+    color: #00ff00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  /* Intro Overlay */
+  #intro-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3em;
+    text-align: center;
+    text-shadow:
+      0 0 8px #00ff00,
+      0 0 15px #00ff00;
+    z-index: 20;
+    user-select: none;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% {opacity: 1;}
+    50% {opacity: 0.6;}
+  }
+  .fade-out {
+    animation: fadeOut 1s forwards;
+  }
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  /* Welcome text as terminal prompt style */
+  #welcome-text {
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    margin: 20px 0;
+    user-select: none;
+    text-shadow:
+      0 0 5px #00ff00;
+  }
+
+  /* Calculator container */
+  #calculator {
+    background: #000000cc;
+    border: 2px solid #00ff00;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow:
+      0 0 15px #00ff00,
+      inset 0 0 10px #00ff00;
+    z-index: 1;
+  }
+
+  /* Display styling with terminal cursor effect */
+  #display {
+    width: 100%;
+    font-size: 2em;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow:
+      0 0 10px #00ff00 inset;
+    box-sizing: border-box;
+    font-weight: bold;
+    caret-color: #0f0;
+  }
+
+  /* Blinking cursor on display */
+  #display:focus {
+    outline: none;
+  }
+  @keyframes blink {
+    0%, 50% {
+      border-right: 2px solid #0f0;
+    }
+    51%, 100% {
+      border-right: 2px solid transparent;
+    }
+  }
+
+  /* Buttons style */
+  button {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5em;
+    width: 21%;
+    padding: 15px;
+    margin: 5px 2%;
+    border: 1.5px solid #00ff00;
+    border-radius: 8px;
+    background: black;
+    color: #00ff00;
+    cursor: pointer;
+    box-shadow: 0 0 8px #00ff00;
+    transition: background 0.2s ease;
+    user-select: none;
+  }
+  button:hover {
+    background: #003300;
+  }
+  button:active {
+    background: #006600;
+    box-shadow: 0 0 20px #00ff00;
+    transform: translateY(2px);
+  }
+
+  /* Operator and special button highlight */
+  .operator {
+    background: #003300;
+    font-weight: bold;
+  }
+  .operator:hover {
+    background: #006600;
+  }
+  .special {
+    background: #004400;
+    font-weight: bold;
+  }
+  .special:hover {
+    background: #008800;
+  }
+
+  /* Instagram clickable link styling */
+  #instagram {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    user-select: none;
+  }
+  #instagram a {
+    color: #0f0;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<!-- Intro overlay -->
+<div id="intro-overlay">Welcome to Asad's Calculator</div>
+
+<!-- Welcome heading -->
+<h1 id="welcome-text">Asad's Hacking Style Calculator</h1>
+
+<!-- Calculator -->
+<div id="calculator">
+  <input type="text" id="display" readonly autocomplete="off" spellcheck="false" />
+  <div>
+    <button onclick="appendNumber('7')">7</button>
+    <button onclick="appendNumber('8')">8</button>
+    <button onclick="appendNumber('9')">9</button>
+    <button class="operator" onclick="appendOperator('/')">÷</button>
+  </div>
+  <div>
+    <button onclick="appendNumber('4')">4</button>
+    <button onclick="appendNumber('5')">5</button>
+    <button onclick="appendNumber('6')">6</button>
+    <button class="operator" onclick="appendOperator('*')">×</button>
+  </div>
+  <div>
+    <button onclick="appendNumber('1')">1</button>
+    <button onclick="appendNumber('2')">2</button>
+    <button onclick="appendNumber('3')">3</button>
+    <button class="operator" onclick="appendOperator('-')">−</button>
+  </div>
+  <div>
+    <button onclick="appendNumber('0')">0</button>
+    <button onclick="appendNumber('.')">.</button>
+    <button class="special" onclick="calculateResult()">=</button>
+    <button class="operator" onclick="appendOperator('+')">+</button>
+  </div>
+  <div>
+    <button class="special" onclick="clearDisplay()">C</button>
+    <button class="special" onclick="insertRandom()">Rnd</button>
+    <button class="special" onclick="convertMeters()">Conv</button>
+    <button class="special" onclick="exitCalculator()">Exit</button>
+  </div>
+</div>
+
+<!-- Thanks text -->
+<h2 id="thanks-text" style="color:#00ff00; font-family:'Courier New', monospace; user-select:none; text-shadow: 0 0 5px #00ff00; margin-top: 30px;">
+  Thanks for using
+</h2>
+
+<!-- Instagram link -->
+<div id="instagram">
+  follow on Instagram 
+  <a href="https://instagram.com/_a4asd__" target="_blank" rel="noopener noreferrer">_a4asd__</a>
+</div>
+
+<script>
+  const display = document.getElementById('display');
+  let expression = '';
+
+  function appendNumber(num) {
+    expression += num;
+    display.value = expression;
+  }
+
+  function appendOperator(op) {
+    if (expression && !isOperator(expression.slice(-1))) {
+      expression += op;
+      display.value = expression;
+    }
+  }
+
+  function isOperator(char) {
+    return ['+', '-', '*', '/'].includes(char);
+  }
+
+  function calculateResult() {
+    try {
+      if (expression) {
+        // Simulate 'hacking style' blinking effect on answer
+        const result = eval(expression);
+        display.value = "";
+        let strResult = result.toString();
+        let i = 0;
+        const interval = setInterval(() => {
+          display.value += strResult.charAt(i);
+          i++;
+          if (i >= strResult.length) {
+            clearInterval(interval);
+          }
+        }, 80);
+        expression = result.toString();
+      }
+    } catch {
+      alert('Invalid Expression');
+      clearDisplay();
+    }
+  }
+
+  function clearDisplay() {
+    expression = '';
+    display.value = '';
+  }
+
+  function insertRandom() {
+    const rnd = Math.floor(Math.random() * 101);
+    expression += rnd;
+    display.value = expression;
+  }
+
+  function convertMeters() {
+    try {
+      const meters = parseFloat(expression);
+      if (isNaN(meters)) throw 'Invalid number';
+      const km = meters / 1000;
+      display.value = `${meters} m = ${km} km`;
+      expression = '';
+    } catch {
+      alert('Enter a valid number for conversion');
+      clearDisplay();
+    }
+  }
+
+  function exitCalculator() {
+    if (confirm('Are you sure you want to exit?')) {
+      clearDisplay();
+      alert('Calculator cleared. To close tab, please use browser controls.');
+    }
+  }
+
+  // Hide intro overlay after 3 seconds
+  window.onload = () => {
+    setTimeout(() => {
+      const overlay = document.getElementById('intro-overlay');
+      overlay.classList.add('fade-out');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 1000);
+    }, 3000);
+  };
+</script>
+
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
